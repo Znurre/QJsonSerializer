@@ -9,7 +9,13 @@ HEADERS += \
     DeserializerBase.h \
     IDeserializer.h \
     QJsonSerializer \
-    QJsonSerializer.h
+    QJsonSerializer.h \
+    SerializerBase.h \
+    ISerializer.h
+
+SOURCES += \
+	DeserializerBase.cpp \
+	SerializerBase.cpp
 
 headers.files = $${HEADERS}
 headers.path = $$[QT_INSTALL_HEADERS]/QJsonSerializer
@@ -20,6 +26,3 @@ features.files = jsonserializer.prf
 features.path = $$[QMAKE_MKSPECS]/features
 
 INSTALLS += headers target features
-
-SOURCES += \
-    DeserializerBase.cpp

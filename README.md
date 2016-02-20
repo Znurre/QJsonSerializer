@@ -55,4 +55,3 @@ What does not work
 
 * Serialization and deserialization of scalar collections (QList\<int\> etc) is currently untested.
 * Serialization and deserialization of polymorphic objects is currently untested.
-* Serialization of Array\<T\> as root object is currently unsupported, deserialization works though.

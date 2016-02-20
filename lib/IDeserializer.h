@@ -31,11 +31,6 @@ template<class TReturn>
 class Deserializer<TReturn *> : public DeserializerBase, public IDeserializer<TReturn *>
 {
 	public:
-		Deserializer()
-		{
-
-		}
-
 		TReturn *deserialize(const QByteArray &data) const override
 		{
 			TReturn *instance = new TReturn();
@@ -53,11 +48,6 @@ template<class TReturn>
 class Deserializer<Array<TReturn>> : public DeserializerBase, public IDeserializer<Array<TReturn>>
 {
 	public:
-		Deserializer()
-		{
-
-		}
-
 		Array<TReturn> deserialize(const QByteArray &data) const override
 		{
 			Array<TReturn> array;

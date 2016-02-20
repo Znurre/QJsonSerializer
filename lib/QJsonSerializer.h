@@ -12,6 +12,7 @@
 
 #include "Array.h"
 #include "IDeserializer.h"
+#include "ISerializer.h"
 
 class QJsonSerializer
 {
@@ -19,7 +20,7 @@ class QJsonSerializer
 		template<class TReturn>
 		TReturn deserialize(const QByteArray &data)
 		{
-			const Deserializer<TReturn> subject;
+			Deserializer<TReturn> subject;
 
 			return subject.deserialize(data);
 		}
@@ -28,9 +29,8 @@ class QJsonSerializer
 		TReturn deserialize(QIODevice *device)
 		{
 			const QByteArray &data = device->readAll();
-			const Deserializer<TReturn> subject;
 
-			return subject.deserialize(data);
+			return deserialize<TReturn>(data);
 		}
 
 		QJsonObject serializeObject(const QObject *instance)
@@ -85,6 +85,14 @@ class QJsonSerializer
 			}
 
 			return root;
+		}
+
+		template<class TSource>
+		QByteArray serialize(const TSource &source)
+		{
+			Serializer<TSource> subject;
+
+			return subject.serialize(source);
 		}
 
 		QByteArray serialize(const QObject *object)

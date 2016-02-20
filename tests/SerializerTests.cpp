@@ -92,8 +92,9 @@ class SerializerTests : public QObject
 			entity.setStringProperty("foo");
 
 			const QByteArray &json = m_serializer.serialize(&entity);
+			const QByteArray expected(R"({"children":[],"dateTimeProperty":null,"floatProperty":0,"intProperty":0,"stringProperty":"foo"})");
 
-			QVERIFY2(json == R"({"children":[],"dateTimeProperty":null,"floatProperty":0,"intProperty":0,"stringProperty":"foo"})", json);
+			QCOMPARE(json, expected);
 		}
 
 		void shouldBeAbleToSerializeIntProperties()
@@ -102,8 +103,9 @@ class SerializerTests : public QObject
 			entity.setIntProperty(42);
 
 			const QByteArray &json = m_serializer.serialize(&entity);
+			const QByteArray expected(R"({"children":[],"dateTimeProperty":null,"floatProperty":0,"intProperty":42,"stringProperty":""})");
 
-			QVERIFY2(json == R"({"children":[],"dateTimeProperty":null,"floatProperty":0,"intProperty":42,"stringProperty":""})", json);
+			QCOMPARE(json, expected);
 		}
 
 		void shouldBeAbleToSerializeFloatProperties()
@@ -112,8 +114,9 @@ class SerializerTests : public QObject
 			entity.setFloatProperty(42.5);
 
 			const QByteArray &json = m_serializer.serialize(&entity);
+			const QByteArray expected(R"({"children":[],"dateTimeProperty":null,"floatProperty":42.5,"intProperty":0,"stringProperty":""})");
 
-			QVERIFY2(json == R"({"children":[],"dateTimeProperty":null,"floatProperty":42.5,"intProperty":0,"stringProperty":""})", json);
+			QCOMPARE(json, expected);
 		}
 
 		void shouldBeAbleToSerializeDateTimeProperties()
@@ -122,8 +125,9 @@ class SerializerTests : public QObject
 			entity.setDateTimeProperty(QDateTime::fromString("2016-02-20 13:37", "yyyy-MM-dd hh:mm"));
 
 			const QByteArray &json = m_serializer.serialize(&entity);
+			const QByteArray expected(R"({"children":[],"dateTimeProperty":"2016-02-20T13:37:00","floatProperty":0,"intProperty":0,"stringProperty":""})");
 
-			QVERIFY2(json == R"({"children":[],"dateTimeProperty":"2016-02-20T13:37:00","floatProperty":0,"intProperty":0,"stringProperty":""})", json);
+			QCOMPARE(json, expected);
 		}
 
 		void shouldBeAbleToSerializeComplexProperties()
@@ -135,8 +139,9 @@ class SerializerTests : public QObject
 			entity.setChild(&child);
 
 			const QByteArray &json = m_serializer.serialize(&entity);
+			const QByteArray expected(R"({"child":{"intProperty":6},"children":[],"dateTimeProperty":null,"floatProperty":0,"intProperty":0,"stringProperty":""})");
 
-			QVERIFY2(json == R"({"child":{"intProperty":6},"children":[],"dateTimeProperty":null,"floatProperty":0,"intProperty":0,"stringProperty":""})", json);
+			QCOMPARE(json, expected);
 		}
 
 		void shouldBeAbleToSerializeArrayProperties()
@@ -154,9 +159,28 @@ class SerializerTests : public QObject
 			Entity entity;
 			entity.setChildren(array);
 
-			const QByteArray &json = m_serializer.serialize(&entity);
+			const QByteArray &actual = m_serializer.serialize(&entity);
+			const QByteArray expected(R"({"children":[{"intProperty":1},{"intProperty":2}],"dateTimeProperty":null,"floatProperty":0,"intProperty":0,"stringProperty":""})");
 
-			QVERIFY2(json == R"({"children":[{"intProperty":1},{"intProperty":2}],"dateTimeProperty":null,"floatProperty":0,"intProperty":0,"stringProperty":""})", json);
+			QCOMPARE(actual, expected);
+		}
+
+		void shouldBeAbleToSerializeArrayDocument()
+		{
+			Child entity1;
+			entity1.setIntProperty(1);
+
+			Child entity2;
+			entity2.setIntProperty(2);
+
+			Array<Child> entities;
+			entities << &entity1;
+			entities << &entity2;
+
+			const QByteArray &actual = m_serializer.serialize(entities);
+			const QByteArray expected(R"([{"intProperty":1},{"intProperty":2}])");
+
+			QCOMPARE(actual, expected);
 		}
 
 	private:
