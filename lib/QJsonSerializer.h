@@ -1,5 +1,5 @@
-#ifndef JSONSERIALIZER_H
-#define JSONSERIALIZER_H
+#ifndef QJSONSERIALIZER_H
+#define QJSONSERIALIZER_H
 
 #include <QByteArray>
 #include <QIODevice>
@@ -13,7 +13,7 @@
 #include "Array.h"
 #include "IDeserializer.h"
 
-class JsonSerializer
+class QJsonSerializer
 {
 	public:
 		template<class TReturn>
@@ -33,11 +33,11 @@ class JsonSerializer
 			return subject.deserialize(data);
 		}
 
-		QJsonObject serializeObject(const QObject &instance)
+		QJsonObject serializeObject(const QObject *instance)
 		{
 			QJsonObject root;
 
-			const QMetaObject *metaObject = instance.metaObject();
+			const QMetaObject *metaObject = instance->metaObject();
 
 			for (int i = metaObject->propertyOffset()
 				; i < metaObject->propertyCount()
@@ -46,7 +46,7 @@ class JsonSerializer
 				const QMetaProperty &property = metaObject->property(i);
 				const QByteArray &name = property.name();
 
-				const QVariant &value = property.read(&instance);
+				const QVariant &value = property.read(instance);
 				const QVariant::Type type = value.type();
 
 				if (type == QVariant::UserType)
@@ -60,7 +60,7 @@ class JsonSerializer
 
 						if (object)
 						{
-							root[name] = serializeObject(*object);
+							root[name] = serializeObject(object);
 						}
 					}
 					else
@@ -72,7 +72,7 @@ class JsonSerializer
 
 						for (QObject *element : objects)
 						{
-							array << serializeObject(*element);
+							array << serializeObject(element);
 						}
 
 						root[name] = array;
@@ -87,7 +87,7 @@ class JsonSerializer
 			return root;
 		}
 
-		QByteArray serialize(const QObject &object)
+		QByteArray serialize(const QObject *object)
 		{
 			const QJsonObject &root = serializeObject(object);
 
@@ -98,4 +98,4 @@ class JsonSerializer
 		}
 };
 
-#endif // JSONSERIALIZER_H
+#endif // QJSONSERIALIZER_H

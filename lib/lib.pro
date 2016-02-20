@@ -4,11 +4,12 @@ TARGET = $$qtLibraryTarget(QJsonSerializer)
 DEFINES += QJSONSERIALIZER_LIBRARY
 VER_MAJ = 1
 
-HEADERS += JsonSerializer.h \
+HEADERS += \
 	Array.h \
     DeserializerBase.h \
     IDeserializer.h \
-    QJsonSerializer
+    QJsonSerializer \
+    QJsonSerializer.h
 
 headers.files = $${HEADERS}
 headers.path = $$[QT_INSTALL_HEADERS]/QJsonSerializer
