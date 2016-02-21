@@ -15,7 +15,9 @@ class ISerializer
 };
 
 template<class TSource>
-class Serializer : public SerializerBase, public ISerializer<TSource>
+class Serializer
+	: public SerializerBase
+	, public ISerializer<TSource>
 {
 	public:
 		QByteArray serialize(const TSource &source) const override
@@ -27,7 +29,9 @@ class Serializer : public SerializerBase, public ISerializer<TSource>
 };
 
 template<class TSource>
-class Serializer<TSource *> : public SerializerBase, public ISerializer<TSource *>
+class Serializer<TSource *>
+	: public SerializerBase
+	, public ISerializer<TSource *>
 {
 	public:
 		QByteArray serialize(TSource *const &source) const override
@@ -42,7 +46,9 @@ class Serializer<TSource *> : public SerializerBase, public ISerializer<TSource 
 };
 
 template<class TReturn>
-class Serializer<Array<TReturn>> : public SerializerBase, public ISerializer<Array<TReturn>>
+class Serializer<Array<TReturn>>
+	: public SerializerBase
+	, public ISerializer<Array<TReturn>>
 {
 	public:
 		QByteArray serialize(const Array<TReturn> &source) const override

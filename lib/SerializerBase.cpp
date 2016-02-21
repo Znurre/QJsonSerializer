@@ -3,15 +3,22 @@
 #include "SerializerBase.h"
 #include "Array.h"
 
-QJsonArray SerializerBase::serializeArray(const IElementFactory &source) const
+QJsonArray SerializerBase::serializeArray(const IArray &source) const
 {
+	const QVariantList &elements = source.toVariantList();
+
+	if (source.isScalar())
+	{
+		return QJsonArray::fromVariantList(elements);
+	}
+
 	QJsonArray array;
 
-	const QList<QObject *> &objects = source.toObjectList();
-
-	for (QObject *element : objects)
+	for (const QVariant &element : elements)
 	{
-		array << serializeObject(element);
+		const QObject *object = element.value<QObject *>();
+
+		array << serializeObject(object);
 	}
 
 	return array;
@@ -49,7 +56,7 @@ QJsonObject SerializerBase::serializeObject(const QObject *source) const
 			}
 			else
 			{
-				const IElementFactory *factory = (IElementFactory *)value.data();
+				const IArray *factory = (IArray *)value.data();
 
 				target[name] = serializeArray(*factory);
 			}

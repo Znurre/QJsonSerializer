@@ -4,16 +4,26 @@
 #include "DeserializerBase.h"
 #include "Array.h"
 
-void DeserializerBase::deserializeArray(const QJsonArray &array, IElementFactory &target) const
+void DeserializerBase::deserializeArray(const QJsonArray &array, IArray &target) const
 {
 	for (int j = 0; j < array.count(); j++)
 	{
-		QObject *child = target.createElement();
-
 		const QJsonValue &element = array[j];
-		const QJsonObject &elementObject = element.toObject();
 
-		deserializeObject(elementObject, child);
+		if (target.isScalar())
+		{
+			const QVariant &variant = element.toVariant();
+
+			target.addElement(variant);
+		}
+		else
+		{
+			QObject *child = target.createElement();
+
+			const QJsonObject &elementObject = element.toObject();
+
+			deserializeObject(elementObject, child);
+		}
 	}
 }
 
@@ -75,7 +85,7 @@ void DeserializerBase::deserializeObject(const QJsonObject &object, QObject *ins
 				const QVariant &variant = property.read(instance);
 				const QJsonArray &array = value.toArray();
 
-				IElementFactory &factory = *(IElementFactory *)variant.data();
+				IArray &factory = *(IArray *)variant.data();
 
 				deserializeArray(array, factory);
 

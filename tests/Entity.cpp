@@ -18,12 +18,12 @@ void Entity::setChild(Child *child)
 	m_child = child;
 }
 
-Array<Child> Entity::children() const
+Array<Child *> Entity::children() const
 {
 	return m_children;
 }
 
-void Entity::setChildren(const Array<Child> &children)
+void Entity::setChildren(const Array<Child *> &children)
 {
 	m_children = children;
 }
@@ -46,6 +46,16 @@ QDateTime Entity::dateTimeProperty() const
 void Entity::setDateTimeProperty(const QDateTime &dateTimeProperty)
 {
 	m_dateTimeProperty = dateTimeProperty;
+}
+
+Array<int> Entity::intCollection() const
+{
+	return m_intCollection;
+}
+
+void Entity::setIntCollection(const Array<int> &intCollection)
+{
+	m_intCollection = intCollection;
 }
 
 int Entity::intProperty() const

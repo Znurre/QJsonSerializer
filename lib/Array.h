@@ -4,24 +4,82 @@
 #include <QList>
 #include <QObject>
 #include <QVariant>
+#include <QDateTime>
 
-class IElementFactory
+class IArray
 {
 	public:
+		virtual bool isScalar() const = 0;
+
 		virtual QObject *createElement() = 0;
-		virtual QList<QObject *> toObjectList() const = 0;
+		virtual QVariantList toVariantList() const = 0;
+
+		virtual void addElement(const QVariant &variant) = 0;
 };
 
 template<class T>
 class Array
-	: public QList<T *>
-	, public IElementFactory
+	: public QList<T>
+	, public IArray
 {
 	public:
 		Q_INVOKABLE Array()
 			: m_pointer(this)
 		{
 
+		}
+
+		bool isScalar() const override
+		{
+			return true;
+		}
+
+		QObject *createElement() override
+		{
+			return nullptr;
+		}
+
+		QVariantList toVariantList() const override
+		{
+			QVariantList list;
+
+			for (const T &element : *m_pointer)
+			{
+				list << QVariant::fromValue(element);
+			}
+
+			return list;
+		}
+
+		void addElement(const QVariant &variant) override
+		{
+			*m_pointer << variant.value<T>();
+		}
+
+	private:
+		Array<T> *m_pointer;
+};
+
+Q_DECLARE_METATYPE(Array<int>)
+Q_DECLARE_METATYPE(Array<long>)
+Q_DECLARE_METATYPE(Array<float>)
+Q_DECLARE_METATYPE(Array<QDateTime>)
+
+template<class T>
+class Array<T *>
+	: public QList<T *>
+	, public IArray
+{
+	public:
+		Q_INVOKABLE Array()
+			: m_pointer(this)
+		{
+
+		}
+
+		bool isScalar() const override
+		{
+			return false;
 		}
 
 		QObject *createElement() override
@@ -33,20 +91,25 @@ class Array
 			return element;
 		}
 
-		QList<QObject *> toObjectList() const override
+		QVariantList toVariantList() const override
 		{
-			QList<QObject *> list;
+			QVariantList list;
 
-			for (T *element : *this)
+			for (T *element : *m_pointer)
 			{
-				list << element;
+				list << QVariant::fromValue(element);
 			}
 
 			return list;
 		}
 
+		void addElement(const QVariant &variant) override
+		{
+			Q_UNUSED(variant);
+		}
+
 	private:
-		Array<T> *m_pointer;
+		Array<T *> *m_pointer;
 };
 
 #endif // ARRAY_H

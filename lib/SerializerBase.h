@@ -6,12 +6,12 @@
 #include <QJsonArray>
 #include <QObject>
 
-class IElementFactory;
+class IArray;
 
 class SerializerBase
 {
 	protected:
-		QJsonArray serializeArray(const IElementFactory &source) const;
+		QJsonArray serializeArray(const IArray &source) const;
 		QJsonObject serializeObject(const QObject *source) const;
 };
 

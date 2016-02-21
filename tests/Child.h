@@ -22,6 +22,6 @@ class Child : public QObject
 };
 
 Q_DECLARE_METATYPE(Child *)
-Q_DECLARE_METATYPE(Array<Child>)
+Q_DECLARE_METATYPE(Array<Child *>)
 
 #endif // CHILD_H
