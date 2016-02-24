@@ -26,11 +26,27 @@ class QJsonSerializer
 		}
 
 		template<class TReturn>
+		void deserialize(const QByteArray &data, TReturn target)
+		{
+			Deserializer<TReturn> subject;
+
+			subject.deserialize(data, target);
+		}
+
+		template<class TReturn>
 		TReturn deserialize(QIODevice *device)
 		{
 			const QByteArray &data = device->readAll();
 
 			return deserialize<TReturn>(data);
+		}
+
+		template<class TReturn>
+		void deserialize(QIODevice *device, TReturn target)
+		{
+			const QByteArray &data = device->readAll();
+
+			deserialize(data, target);
 		}
 
 		template<class TSource>

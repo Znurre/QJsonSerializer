@@ -11,6 +11,7 @@ class IDeserializer
 {
 	public:
 		virtual TReturn deserialize(const QByteArray &data) const = 0;
+		virtual void deserialize(const QByteArray &data, TReturn target) const = 0;
 };
 
 template<class TReturn>
@@ -23,9 +24,13 @@ class Deserializer
 		{
 			Q_UNUSED(data);
 
-			TReturn instance;
+			return TReturn();
+		}
 
-			return instance;
+		void deserialize(const QByteArray &data, TReturn target) const override
+		{
+			Q_UNUSED(data);
+			Q_UNUSED(target);
 		}
 };
 
@@ -39,12 +44,17 @@ class Deserializer<TReturn *>
 		{
 			TReturn *instance = new TReturn();
 
+			deserialize(data, instance);
+
+			return instance;
+		}
+
+		void deserialize(const QByteArray &data, TReturn *target) const override
+		{
 			const QJsonDocument &document = QJsonDocument::fromJson(data);
 			const QJsonObject &root = document.object();
 
-			deserializeObject(root, instance);
-
-			return instance;
+			deserializeObject(root, target);
 		}
 };
 
@@ -64,6 +74,12 @@ class Deserializer<Array<TReturn>>
 			deserializeArray(root, array);
 
 			return array;
+		}
+
+		void deserialize(const QByteArray &data, Array<TReturn> target) const override
+		{
+			Q_UNUSED(data);
+			Q_UNUSED(target);
 		}
 };
 

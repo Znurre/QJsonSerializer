@@ -99,6 +99,17 @@ class SerializerTests : public QObject
 			QCOMPARE(intCollection[2], 3);
 		}
 
+		void shouldBeAbleToDeserializeOntoInstance()
+		{
+			const QByteArray json = R"({ "intProperty": 42 })";
+
+			Entity entity;
+
+			m_serializer.deserialize(json, &entity);
+
+			QCOMPARE(entity.intProperty(), 42);
+		}
+
 		void shouldBeAbleToSerializeStringProperties()
 		{
 			Entity entity;
