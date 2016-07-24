@@ -64,6 +64,7 @@ Q_DECLARE_METATYPE(Array<int>)
 Q_DECLARE_METATYPE(Array<long>)
 Q_DECLARE_METATYPE(Array<float>)
 Q_DECLARE_METATYPE(Array<QDateTime>)
+Q_DECLARE_METATYPE(Array<QString>)
 
 template<class T>
 class Array<T *>

@@ -16,6 +16,7 @@ class Entity : public QObject
 	Q_PROPERTY(QString stringProperty READ stringProperty WRITE setStringProperty)
 	Q_PROPERTY(QDateTime dateTimeProperty READ dateTimeProperty WRITE setDateTimeProperty)
 	Q_PROPERTY(Array<int> intCollection READ intCollection WRITE setIntCollection)
+	Q_PROPERTY(Array<QString> stringCollection READ stringCollection WRITE setStringCollection)
 
 	Q_PROPERTY(int intProperty READ intProperty WRITE setIntProperty)
 	Q_PROPERTY(float floatProperty READ floatProperty WRITE setFloatProperty)
@@ -38,6 +39,9 @@ class Entity : public QObject
 		Array<int> intCollection() const;
 		void setIntCollection(const Array<int> &intCollection);
 
+		Array<QString> stringCollection() const;
+		void setStringCollection(const Array<QString> &stringCollection);
+
 		int intProperty() const;
 		void setIntProperty(int intProperty);
 
@@ -51,6 +55,7 @@ class Entity : public QObject
 		QString m_stringProperty;
 		QDateTime m_dateTimeProperty;
 		Array<int> m_intCollection;
+		Array<QString> m_stringCollection;
 
 		int m_intProperty;
 		float m_floatProperty;

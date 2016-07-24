@@ -58,6 +58,16 @@ void Entity::setIntCollection(const Array<int> &intCollection)
 	m_intCollection = intCollection;
 }
 
+Array<QString> Entity::stringCollection() const
+{
+	return m_stringCollection;
+}
+
+void Entity::setStringCollection(const Array<QString> &stringCollection)
+{
+	m_stringCollection = stringCollection;
+}
+
 int Entity::intProperty() const
 {
 	return m_intProperty;
