@@ -6,12 +6,14 @@
 #include <QVariant>
 #include <QDateTime>
 
+#include "IObjectFactory.h"
+
 class IArray
 {
 	public:
 		virtual bool isScalar() const = 0;
 
-		virtual QObject *createElement() = 0;
+		virtual QObject *createElement(IObjectFactory &factory) = 0;
 		virtual QVariantList toVariantList() const = 0;
 
 		virtual void addElement(const QVariant &variant) = 0;
@@ -34,8 +36,10 @@ class Array
 			return true;
 		}
 
-		QObject *createElement() override
+		QObject *createElement(IObjectFactory &factory) override
 		{
+			Q_UNUSED(factory);
+
 			return nullptr;
 		}
 
@@ -83,9 +87,9 @@ class Array<T *>
 			return false;
 		}
 
-		QObject *createElement() override
+		QObject *createElement(IObjectFactory &factory) override
 		{
-			T *element = new T();
+			T *element = (T *)factory.create(&T::staticMetaObject);
 
 			m_pointer->append(element);
 

@@ -8,7 +8,7 @@
 
 class IArray;
 
-class SerializerBase
+class Q_DECL_EXPORT SerializerBase
 {
 	protected:
 		QJsonArray serializeArray(const IArray &source) const;

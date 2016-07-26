@@ -20,6 +20,12 @@ class Deserializer
 	, public IDeserializer<TReturn>
 {
 	public:
+		Deserializer(IObjectFactory &factory)
+			: DeserializerBase(factory)
+		{
+
+		}
+
 		TReturn deserialize(const QByteArray &data) const override
 		{
 			Q_UNUSED(data);
@@ -40,6 +46,12 @@ class Deserializer<TReturn *>
 	, public IDeserializer<TReturn *>
 {
 	public:
+		Deserializer(IObjectFactory &factory)
+			: DeserializerBase(factory)
+		{
+
+		}
+
 		TReturn *deserialize(const QByteArray &data) const override
 		{
 			TReturn *instance = new TReturn();
@@ -64,6 +76,12 @@ class Deserializer<Array<TReturn>>
 	, public IDeserializer<Array<TReturn>>
 {
 	public:
+		Deserializer(IObjectFactory &factory)
+			: DeserializerBase(factory)
+		{
+
+		}
+
 		Array<TReturn> deserialize(const QByteArray &data) const override
 		{
 			Array<TReturn> array;

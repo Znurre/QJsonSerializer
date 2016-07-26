@@ -1,8 +1,15 @@
 #include <QMetaProperty>
 #include <QDebug>
 
+#include "IObjectFactory.h"
 #include "DeserializerBase.h"
 #include "Array.h"
+
+DeserializerBase::DeserializerBase(IObjectFactory &factory)
+	: m_factory(factory)
+{
+
+}
 
 void DeserializerBase::deserializeArray(const QJsonArray &array, IArray &target) const
 {
@@ -18,7 +25,7 @@ void DeserializerBase::deserializeArray(const QJsonArray &array, IArray &target)
 		}
 		else
 		{
-			QObject *child = target.createElement();
+			QObject *child = target.createElement(m_factory);
 
 			const QJsonObject &elementObject = element.toObject();
 
@@ -57,13 +64,7 @@ void DeserializerBase::deserializeObject(const QJsonObject &object, QObject *ins
 					const QMetaType type(userType);
 					const QMetaObject *childMetaObject = type.metaObject();
 
-					QObject *child = childMetaObject->newInstance();
-
-					if (!child)
-					{
-						qCritical() << "Failed to create an instance of type" << childMetaObject->className();
-						qCritical() << "Did you forget to declare a public parameterless Q_INVOKABLE constructor?";
-					}
+					QObject *child = m_factory.create(childMetaObject);
 
 					const QJsonObject &childObject = value.toObject();
 					const QVariant &variant = QVariant::fromValue(child);

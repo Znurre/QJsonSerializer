@@ -11,11 +11,13 @@ HEADERS += \
     QJsonSerializer \
     QJsonSerializer.h \
     SerializerBase.h \
-    ISerializer.h
+    ISerializer.h \
+    IObjectFactory.h
 
 SOURCES += \
 	DeserializerBase.cpp \
-	SerializerBase.cpp
+	SerializerBase.cpp \
+    QJsonSerializer.cpp
 
 headers.files = $${HEADERS}
 headers.path = $$[QT_INSTALL_HEADERS]/QJsonSerializer
