@@ -22,7 +22,7 @@ class Entity : public QObject
 	Q_PROPERTY(float floatProperty READ floatProperty WRITE setFloatProperty)
 
 	public:
-		Entity();
+		Q_INVOKABLE Entity();
 
 		Child *child() const;
 		void setChild(Child *child);

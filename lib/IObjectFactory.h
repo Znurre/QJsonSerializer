@@ -13,6 +13,11 @@ class IObjectFactory
 class DefaultObjectFactory : public IObjectFactory
 {
 	public:
+		DefaultObjectFactory()
+		{
+
+		}
+
 		QObject *create(const QMetaObject *metaObject) const override
 		{
 			QObject *child = metaObject->newInstance();
