@@ -5,7 +5,7 @@
 #include "DeserializerBase.h"
 #include "Array.h"
 
-DeserializerBase::DeserializerBase(IObjectFactory &factory)
+DeserializerBase::DeserializerBase(const IObjectFactory &factory)
 	: m_factory(factory)
 {
 

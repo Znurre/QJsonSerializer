@@ -20,7 +20,7 @@ class Q_DECL_EXPORT QJsonSerializer
 	public:
 		QJsonSerializer();
 
-		void setObjectFactory(IObjectFactory *factory);
+		void setObjectFactory(const IObjectFactory *factory);
 
 		template<class TReturn>
 		TReturn deserialize(const QByteArray &data)
@@ -63,8 +63,8 @@ class Q_DECL_EXPORT QJsonSerializer
 		}
 
 	private:
-		DefaultObjectFactory m_defaultFactory;
-		IObjectFactory *m_factory;
+		const DefaultObjectFactory m_defaultFactory;
+		const IObjectFactory *m_factory;
 };
 
 #endif // QJSONSERIALIZER_H

@@ -20,7 +20,7 @@ class Deserializer
 	, public IDeserializer<TReturn>
 {
 	public:
-		Deserializer(IObjectFactory &factory)
+		Deserializer(const IObjectFactory &factory)
 			: DeserializerBase(factory)
 		{
 
@@ -46,7 +46,7 @@ class Deserializer<TReturn *>
 	, public IDeserializer<TReturn *>
 {
 	public:
-		Deserializer(IObjectFactory &factory)
+		Deserializer(const IObjectFactory &factory)
 			: DeserializerBase(factory)
 		{
 
@@ -76,7 +76,7 @@ class Deserializer<Array<TReturn>>
 	, public IDeserializer<Array<TReturn>>
 {
 	public:
-		Deserializer(IObjectFactory &factory)
+		Deserializer(const IObjectFactory &factory)
 			: DeserializerBase(factory)
 		{
 

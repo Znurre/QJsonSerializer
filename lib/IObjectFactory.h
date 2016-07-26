@@ -7,13 +7,13 @@
 class IObjectFactory
 {
 	public:
-		virtual QObject *create(const QMetaObject *metaObject) = 0;
+		virtual QObject *create(const QMetaObject *metaObject) const = 0;
 };
 
 class DefaultObjectFactory : public IObjectFactory
 {
 	public:
-		QObject *create(const QMetaObject *metaObject)
+		QObject *create(const QMetaObject *metaObject) const override
 		{
 			QObject *child = metaObject->newInstance();
 

@@ -6,7 +6,7 @@ QJsonSerializer::QJsonSerializer()
 
 }
 
-void QJsonSerializer::setObjectFactory(IObjectFactory *factory)
+void QJsonSerializer::setObjectFactory(const IObjectFactory *factory)
 {
 	m_factory = factory;
 }
