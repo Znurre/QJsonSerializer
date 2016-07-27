@@ -54,7 +54,7 @@ class Deserializer<TReturn *>
 
 		TReturn *deserialize(const QByteArray &data) const override
 		{
-			TReturn *instance = new TReturn();
+			TReturn *instance = (TReturn *)m_factory.create(&TReturn::staticMetaObject);
 
 			deserialize(data, instance);
 
