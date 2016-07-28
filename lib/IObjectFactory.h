@@ -8,6 +8,12 @@ class IObjectFactory
 {
 	public:
 		virtual QObject *create(const QMetaObject *metaObject) const = 0;
+
+		template<class T>
+		T *create() const
+		{
+			return (T* )create(&T::staticMetaObject);
+		}
 };
 
 class DefaultObjectFactory : public IObjectFactory

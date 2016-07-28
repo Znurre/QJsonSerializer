@@ -89,7 +89,7 @@ class Array<T *>
 
 		QObject *createElement(const IObjectFactory &factory) override
 		{
-			T *element = (T *)factory.create(&T::staticMetaObject);
+			T *element = factory.create<T>();
 
 			m_pointer->append(element);
 
