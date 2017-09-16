@@ -7,17 +7,7 @@
 #include "DeserializerBase.h"
 
 template<class TReturn>
-class IDeserializer
-{
-	public:
-		virtual TReturn deserialize(const QByteArray &data) const = 0;
-		virtual void deserialize(const QByteArray &data, TReturn target) const = 0;
-};
-
-template<class TReturn>
-class Deserializer
-	: public DeserializerBase
-	, public IDeserializer<TReturn>
+class Deserializer : public DeserializerBase
 {
 	public:
 		Deserializer(const IObjectFactory &factory)
@@ -26,14 +16,14 @@ class Deserializer
 
 		}
 
-		TReturn deserialize(const QByteArray &data) const override
+		TReturn deserialize(const QByteArray &data) const
 		{
 			Q_UNUSED(data);
 
 			return TReturn();
 		}
 
-		void deserialize(const QByteArray &data, TReturn target) const override
+		void deserialize(const QByteArray &data, TReturn target) const
 		{
 			Q_UNUSED(data);
 			Q_UNUSED(target);
@@ -41,9 +31,7 @@ class Deserializer
 };
 
 template<class TReturn>
-class Deserializer<TReturn *>
-	: public DeserializerBase
-	, public IDeserializer<TReturn *>
+class Deserializer<TReturn *> : public DeserializerBase
 {
 	public:
 		Deserializer(const IObjectFactory &factory)
@@ -52,7 +40,7 @@ class Deserializer<TReturn *>
 
 		}
 
-		TReturn *deserialize(const QByteArray &data) const override
+		TReturn *deserialize(const QByteArray &data) const
 		{
 			TReturn *instance = m_factory.create<TReturn>();
 
@@ -61,7 +49,7 @@ class Deserializer<TReturn *>
 			return instance;
 		}
 
-		void deserialize(const QByteArray &data, TReturn *target) const override
+		void deserialize(const QByteArray &data, TReturn *target) const
 		{
 			const QJsonDocument &document = QJsonDocument::fromJson(data);
 			const QJsonObject &root = document.object();
@@ -71,9 +59,7 @@ class Deserializer<TReturn *>
 };
 
 template<class TReturn>
-class Deserializer<Array<TReturn>>
-	: public DeserializerBase
-	, public IDeserializer<Array<TReturn>>
+class Deserializer<Array<TReturn>> : public DeserializerBase
 {
 	public:
 		Deserializer(const IObjectFactory &factory)
@@ -82,22 +68,21 @@ class Deserializer<Array<TReturn>>
 
 		}
 
-		Array<TReturn> deserialize(const QByteArray &data) const override
+		Array<TReturn> deserialize(const QByteArray &data) const
 		{
 			Array<TReturn> array;
 
-			const QJsonDocument &document = QJsonDocument::fromJson(data);
-			const QJsonArray &root = document.array();
-
-			deserializeArray(root, array);
+			deserialize(data, array);
 
 			return array;
 		}
 
-		void deserialize(const QByteArray &data, Array<TReturn> target) const override
+		void deserialize(const QByteArray &data, Array<TReturn>& target) const
 		{
-			Q_UNUSED(data);
-			Q_UNUSED(target);
+			const QJsonDocument &document = QJsonDocument::fromJson(data);
+			const QJsonArray &root = document.array();
+
+			deserializeArray(root, target);
 		}
 };
 

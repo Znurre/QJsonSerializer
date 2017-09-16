@@ -18,7 +18,7 @@ QJsonArray SerializerBase::serializeArray(const IArray &source) const
 	{
 		const QObject *object = element.value<QObject *>();
 
-		array << serializeObject(object);
+		array.append(serializeObject(object));
 	}
 
 	return array;

@@ -235,6 +235,18 @@ class SerializerTests : public QObject
 			QCOMPARE(actual, expected);
 		}
 
+		void shouldBeAbleToDeserializeArrayOfStringWithTarget()
+		{
+			Array<QString> target;
+
+			const QByteArray json = R"([ "foo", "bar" ])";
+
+			m_serializer.deserialize(json, target);
+
+			QCOMPARE(target[0], QStringLiteral("foo"));
+			QCOMPARE(target[1], QStringLiteral("bar"));
+		}
+
 	private:
 		QJsonSerializer m_serializer;
 };
