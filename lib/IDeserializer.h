@@ -2,6 +2,7 @@
 #define IDESERIALIZER_H
 
 #include <QByteArray>
+#include <QJsonDocument>
 
 #include "Array.h"
 #include "DeserializerBase.h"
@@ -18,15 +19,34 @@ class Deserializer : public DeserializerBase
 
 		TReturn deserialize(const QByteArray &data) const
 		{
-			Q_UNUSED(data);
+			TReturn value;
 
-			return TReturn();
+			deserialize(data, value);
+
+			return value;
 		}
 
-		void deserialize(const QByteArray &data, TReturn target) const
+		void deserialize(const QByteArray &data, TReturn &target) const
 		{
-			Q_UNUSED(data);
-			Q_UNUSED(target);
+			/*
+			 * QJsonDocument does not support documents with roots other than objects or arrays,
+			 * despite RFC 7159 and ECMA-404 stating that it should be allowed.
+			 * Therefore we have to construct a dummy object and deserialize it.
+			*/
+
+			QByteArray cloned = data;
+
+			cloned.insert(0, "{ \"dummy\": ");
+			cloned.append("}");
+
+			const QJsonDocument &document = QJsonDocument::fromJson(cloned);
+			const QJsonObject &object = document.object();
+
+			const QVariant &variant = object
+				.value("dummy")
+				.toVariant();
+
+			target = variant.value<TReturn>();
 		}
 };
 

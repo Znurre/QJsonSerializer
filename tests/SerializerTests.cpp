@@ -247,6 +247,14 @@ class SerializerTests : public QObject
 			QCOMPARE(target[1], QStringLiteral("bar"));
 		}
 
+		void shouldBeAbleToDeserializePrimitiveDocuments()
+		{
+			const QByteArray json = R"("foo")";
+			const QString &target = m_serializer.deserialize<QString>(json);
+
+			QCOMPARE(target, QStringLiteral("foo"));
+		}
+
 	private:
 		QJsonSerializer m_serializer;
 };
