@@ -23,7 +23,7 @@ class Q_DECL_EXPORT QJsonSerializer
 		void setObjectFactory(const IObjectFactory *factory);
 
 		template<class TReturn>
-		TReturn deserialize(const QByteArray &data)
+		TReturn deserialize(const QByteArray &data) const
 		{
 			Deserializer<TReturn> subject(*m_factory);
 
@@ -31,7 +31,7 @@ class Q_DECL_EXPORT QJsonSerializer
 		}
 
 		template<class TReturn>
-		void deserialize(const QByteArray &data, TReturn target)
+		void deserialize(const QByteArray &data, TReturn target) const
 		{
 			Deserializer<TReturn> subject(*m_factory);
 
@@ -39,7 +39,7 @@ class Q_DECL_EXPORT QJsonSerializer
 		}
 
 		template<class TReturn>
-		TReturn deserialize(QIODevice *device)
+		TReturn deserialize(QIODevice *device) const
 		{
 			const QByteArray &data = device->readAll();
 
@@ -47,7 +47,7 @@ class Q_DECL_EXPORT QJsonSerializer
 		}
 
 		template<class TReturn>
-		void deserialize(QIODevice *device, TReturn target)
+		void deserialize(QIODevice *device, TReturn target) const
 		{
 			const QByteArray &data = device->readAll();
 
@@ -55,7 +55,7 @@ class Q_DECL_EXPORT QJsonSerializer
 		}
 
 		template<class TSource>
-		QByteArray serialize(const TSource &source)
+		QByteArray serialize(const TSource &source) const
 		{
 			Serializer<TSource> subject;
 
