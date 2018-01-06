@@ -255,6 +255,32 @@ class SerializerTests : public QObject
 			QCOMPARE(target, QStringLiteral("foo"));
 		}
 
+		void shouldBeAbleToDeserializeFromJSonObject()
+		{
+			QJsonObject child;
+			child["intProperty"] = 22;
+
+			QJsonArray children;
+			children.append(child);
+
+			QJsonObject object;
+			object["floatProperty"] = 10.5f;
+			object["intProperty"] = 2;
+			object["children"] = children;
+
+			Entity entity;
+
+			m_serializer.deserialize(object, &entity);
+
+			QCOMPARE(entity.floatProperty(), 10.5f);
+			QCOMPARE(entity.intProperty(), 2);
+
+			const Array<Child *> &childArray = entity.children();
+
+			QCOMPARE(childArray.count(), 1);
+			QCOMPARE(childArray[0]->intProperty(), 22);
+		}
+
 	private:
 		QJsonSerializer m_serializer;
 };

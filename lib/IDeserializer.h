@@ -26,6 +26,12 @@ class Deserializer : public DeserializerBase
 			return value;
 		}
 
+		void deserialize(const QJsonObject &object, TReturn &target) const
+		{
+			Q_UNUSED(object);
+			Q_UNUSED(target);
+		}
+
 		void deserialize(const QByteArray &data, TReturn &target) const
 		{
 			/*
@@ -60,6 +66,11 @@ class Deserializer<TReturn *> : public DeserializerBase
 
 		}
 
+		void deserialize(const QJsonObject &object, TReturn *target) const
+		{
+			deserializeObject(object, target);
+		}
+
 		TReturn *deserialize(const QByteArray &data) const
 		{
 			TReturn *instance = m_factory.create<TReturn>();
@@ -88,6 +99,12 @@ class Deserializer<Array<TReturn>> : public DeserializerBase
 
 		}
 
+		void deserialize(const QJsonObject &object, Array<TReturn> &target) const
+		{
+			Q_UNUSED(object);
+			Q_UNUSED(target);
+		}
+
 		Array<TReturn> deserialize(const QByteArray &data) const
 		{
 			Array<TReturn> array;
@@ -97,7 +114,7 @@ class Deserializer<Array<TReturn>> : public DeserializerBase
 			return array;
 		}
 
-		void deserialize(const QByteArray &data, Array<TReturn>& target) const
+		void deserialize(const QByteArray &data, Array<TReturn> &target) const
 		{
 			const QJsonDocument &document = QJsonDocument::fromJson(data);
 			const QJsonArray &root = document.array();

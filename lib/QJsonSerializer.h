@@ -31,6 +31,14 @@ class Q_DECL_EXPORT QJsonSerializer
 		}
 
 		template<class TReturn>
+		void deserialize(const QJsonObject &object, TReturn target) const
+		{
+			Deserializer<TReturn> subject(*m_factory);
+
+			subject.deserialize(object, target);
+		}
+
+		template<class TReturn>
 		void deserialize(const QByteArray &data, TReturn target) const
 		{
 			Deserializer<TReturn> subject(*m_factory);
