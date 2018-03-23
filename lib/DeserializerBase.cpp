@@ -27,21 +27,20 @@ void DeserializerBase::deserializeArray(const QJsonArray &array, IArray &target)
 		{
 			QObject *child = target.createElement(m_factory);
 
+			const QMetaObject *metaObject = target.metaObject();
 			const QJsonObject &elementObject = element.toObject();
 
-			deserializeObject(elementObject, child);
+			deserializeObject(elementObject, child, metaObject);
 		}
 	}
 }
 
-void DeserializerBase::deserializeObject(const QJsonObject &object, QObject *instance) const
+void DeserializerBase::deserializeObject(const QJsonObject &object, void *instance, const QMetaObject *metaObject) const
 {
 	if (!instance)
 	{
 		return;
 	}
-
-	const QMetaObject *metaObject = instance->metaObject();
 
 	for (int i = metaObject->propertyOffset()
 		 ; i < metaObject->propertyCount()
@@ -69,9 +68,9 @@ void DeserializerBase::deserializeObject(const QJsonObject &object, QObject *ins
 					const QJsonObject &childObject = value.toObject();
 					const QVariant &variant = QVariant::fromValue(child);
 
-					deserializeObject(childObject, child);
+					deserializeObject(childObject, child, childMetaObject);
 
-					property.write(instance, variant);
+					property.writeOnGadget(instance, variant);
 				}
 				else
 				{
@@ -83,7 +82,7 @@ void DeserializerBase::deserializeObject(const QJsonObject &object, QObject *ins
 
 			case QJsonValue::Array:
 			{
-				const QVariant &variant = property.read(instance);
+				const QVariant &variant = property.readOnGadget(instance);
 				const QJsonArray &array = value.toArray();
 
 				IArray &factory = *(IArray *)variant.data();
@@ -102,7 +101,7 @@ void DeserializerBase::deserializeObject(const QJsonObject &object, QObject *ins
 			{
 				const QVariant &variant = value.toVariant();
 
-				property.write(instance, variant);
+				property.writeOnGadget(instance, variant);
 
 				break;
 			}

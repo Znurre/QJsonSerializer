@@ -15,11 +15,15 @@ TEMPLATE = app
 
 HEADERS += \
 	Entity.h \
-	Child.h
+	Child.h \
+    GadgetEntity.h \
+    GadgetChild.h
 
 SOURCES += SerializerTests.cpp \
     Entity.cpp \
-	Child.cpp
+	Child.cpp \
+    GadgetEntity.cpp \
+    GadgetChild.cpp
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 

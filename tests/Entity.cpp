@@ -5,7 +5,6 @@ Entity::Entity()
 	, m_intProperty(0)
 	, m_floatProperty(0)
 {
-
 }
 
 Child *Entity::child() const

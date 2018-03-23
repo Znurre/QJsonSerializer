@@ -13,6 +13,8 @@ class IArray
 	public:
 		virtual bool isScalar() const = 0;
 
+		virtual const QMetaObject *metaObject() const = 0;
+
 		virtual QObject *createElement(const IObjectFactory &factory) = 0;
 		virtual QVariantList toVariantList() const = 0;
 
@@ -34,6 +36,11 @@ class Array
 		bool isScalar() const override
 		{
 			return true;
+		}
+
+		const QMetaObject *metaObject() const override
+		{
+			return nullptr;
 		}
 
 		QObject *createElement(const IObjectFactory &factory) override
@@ -85,6 +92,11 @@ class Array<T *>
 		bool isScalar() const override
 		{
 			return false;
+		}
+
+		const QMetaObject *metaObject() const override
+		{
+			return &T::staticMetaObject;
 		}
 
 		QObject *createElement(const IObjectFactory &factory) override

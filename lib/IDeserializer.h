@@ -68,7 +68,9 @@ class Deserializer<TReturn *> : public DeserializerBase
 
 		void deserialize(const QJsonObject &object, TReturn *target) const
 		{
-			deserializeObject(object, target);
+			const QMetaObject *metaObject = target->metaObject();
+
+			deserializeObject(object, target, metaObject);
 		}
 
 		TReturn *deserialize(const QByteArray &data) const
@@ -84,8 +86,9 @@ class Deserializer<TReturn *> : public DeserializerBase
 		{
 			const QJsonDocument &document = QJsonDocument::fromJson(data);
 			const QJsonObject &root = document.object();
+			const QMetaObject *metaObject = target->metaObject();
 
-			deserializeObject(root, target);
+			deserializeObject(root, target, metaObject);
 		}
 };
 

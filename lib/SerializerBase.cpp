@@ -6,6 +6,7 @@
 QJsonArray SerializerBase::serializeArray(const IArray &source) const
 {
 	const QVariantList &elements = source.toVariantList();
+	const QMetaObject *metaObject = source.metaObject();
 
 	if (source.isScalar())
 	{
@@ -18,17 +19,15 @@ QJsonArray SerializerBase::serializeArray(const IArray &source) const
 	{
 		const QObject *object = element.value<QObject *>();
 
-		array.append(serializeObject(object));
+		array.append(serializeObject(object, metaObject));
 	}
 
 	return array;
 }
 
-QJsonObject SerializerBase::serializeObject(const QObject *source) const
+QJsonObject SerializerBase::serializeObject(const void *source, const QMetaObject *metaObject) const
 {
 	QJsonObject target;
-
-	const QMetaObject *metaObject = source->metaObject();
 
 	for (int i = metaObject->propertyOffset()
 		; i < metaObject->propertyCount()
@@ -37,7 +36,7 @@ QJsonObject SerializerBase::serializeObject(const QObject *source) const
 		const QMetaProperty &property = metaObject->property(i);
 		const QByteArray &name = property.name();
 
-		const QVariant &value = property.read(source);
+		const QVariant &value = property.readOnGadget(source);
 		const QVariant::Type type = value.type();
 
 		if (type == QVariant::UserType)
@@ -51,7 +50,9 @@ QJsonObject SerializerBase::serializeObject(const QObject *source) const
 
 				if (object)
 				{
-					target[name] = serializeObject(object);
+					const QMetaObject *childMetaObject = QMetaType::metaObjectForType(userType);
+
+					target[name] = serializeObject(object, childMetaObject);
 				}
 			}
 			else

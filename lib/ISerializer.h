@@ -36,7 +36,8 @@ class Serializer<TSource *>
 	public:
 		QByteArray serialize(TSource *const &source) const override
 		{
-			const QJsonObject &object = serializeObject(source);
+			const QMetaObject *metaObject = source->metaObject();
+			const QJsonObject &object = serializeObject(source, metaObject);
 
 			QJsonDocument document;
 			document.setObject(object);

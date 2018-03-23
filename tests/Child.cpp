@@ -3,7 +3,6 @@
 Child::Child()
 	: m_intProperty(0)
 {
-
 }
 
 int Child::intProperty() const

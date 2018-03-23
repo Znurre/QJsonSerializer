@@ -15,7 +15,7 @@ class Q_DECL_EXPORT DeserializerBase
 		DeserializerBase(const IObjectFactory &factory);
 
 		void deserializeArray(const QJsonArray &array, IArray &target) const;
-		void deserializeObject(const QJsonObject &object, QObject *instance) const;
+		void deserializeObject(const QJsonObject &object, void *instance, const QMetaObject *metaObject) const;
 
 		const IObjectFactory &m_factory;
 };
