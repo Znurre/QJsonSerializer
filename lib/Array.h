@@ -15,7 +15,7 @@ class IArray
 
 		virtual const QMetaObject *metaObject() const = 0;
 
-		virtual QObject *createElement(const IObjectFactory &factory) = 0;
+		virtual void *createElement(const IObjectFactory &factory) = 0;
 		virtual QVariantList toVariantList() const = 0;
 
 		virtual void addElement(const QVariant &variant) = 0;
@@ -43,7 +43,7 @@ class Array
 			return nullptr;
 		}
 
-		QObject *createElement(const IObjectFactory &factory) override
+		void *createElement(const IObjectFactory &factory) override
 		{
 			Q_UNUSED(factory);
 
@@ -99,7 +99,7 @@ class Array<T *>
 			return &T::staticMetaObject;
 		}
 
-		QObject *createElement(const IObjectFactory &factory) override
+		void *createElement(const IObjectFactory &factory) override
 		{
 			T *element = factory.create<T>();
 

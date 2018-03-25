@@ -7,7 +7,7 @@
 class IObjectFactory
 {
 	public:
-		virtual QObject *create(const QMetaObject *metaObject) const = 0;
+		virtual void *create(const QMetaObject *metaObject) const = 0;
 
 		template<class T>
 		T *create() const
@@ -24,9 +24,9 @@ class DefaultObjectFactory : public IObjectFactory
 
 		}
 
-		QObject *create(const QMetaObject *metaObject) const override
+		void *create(const QMetaObject *metaObject) const override
 		{
-			QObject *child = metaObject->newInstance();
+			void *child = metaObject->newInstance();
 
 			if (!child)
 			{

@@ -14,6 +14,9 @@ class SerializerTests : public QObject
 		SerializerTests()
 		{
 			qRegisterMetaType<Child *>();
+			qRegisterMetaType<GadgetChild *>();
+			qRegisterMetaType<GadgetChild>();
+			qRegisterMetaType<Entity *>();
 		}
 
 	private Q_SLOTS:

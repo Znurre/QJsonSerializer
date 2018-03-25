@@ -25,7 +25,7 @@ void DeserializerBase::deserializeArray(const QJsonArray &array, IArray &target)
 		}
 		else
 		{
-			QObject *child = target.createElement(m_factory);
+			void *child = target.createElement(m_factory);
 
 			const QMetaObject *metaObject = target.metaObject();
 			const QJsonObject &elementObject = element.toObject();
@@ -63,10 +63,10 @@ void DeserializerBase::deserializeObject(const QJsonObject &object, void *instan
 					const QMetaType type(userType);
 					const QMetaObject *childMetaObject = type.metaObject();
 
-					QObject *child = m_factory.create(childMetaObject);
+					void *child = m_factory.create(childMetaObject);
 
 					const QJsonObject &childObject = value.toObject();
-					const QVariant &variant = QVariant::fromValue(child);
+					const QVariant variant(userType, &child);
 
 					deserializeObject(childObject, child, childMetaObject);
 

@@ -61,4 +61,6 @@ class Entity : public QObject
 		float m_floatProperty;
 };
 
+Q_DECLARE_METATYPE(Entity *)
+
 #endif // ENTITY_H

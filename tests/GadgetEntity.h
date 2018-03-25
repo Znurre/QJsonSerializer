@@ -6,9 +6,9 @@
 
 #include "GadgetChild.h"
 
-class GadgetEntity : public QObject
+class GadgetEntity
 {
-	Q_OBJECT
+	Q_GADGET
 
 	Q_PROPERTY(GadgetChild *child READ child WRITE setChild)
 	Q_PROPERTY(Array<GadgetChild *> children READ children WRITE setChildren)

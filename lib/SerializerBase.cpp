@@ -17,7 +17,7 @@ QJsonArray SerializerBase::serializeArray(const IArray &source) const
 
 	for (const QVariant &element : elements)
 	{
-		const QObject *object = element.value<QObject *>();
+		const void *object = *reinterpret_cast<void *const*>(element.constData());
 
 		array.append(serializeObject(object, metaObject));
 	}
@@ -44,9 +44,9 @@ QJsonObject SerializerBase::serializeObject(const void *source, const QMetaObjec
 			const int userType = property.userType();
 			const int flags = QMetaType::typeFlags(userType);
 
-			if (flags & QMetaType::PointerToQObject)
+			if (flags & QMetaType::PointerToQObject || flags & QMetaType::PointerToGadget)
 			{
-				QObject *object = value.value<QObject *>();
+				const void *object = *reinterpret_cast<void *const*>(value.constData());
 
 				if (object)
 				{

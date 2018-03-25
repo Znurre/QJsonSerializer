@@ -5,9 +5,9 @@
 
 #include "Array.h"
 
-class GadgetChild : public QObject
+class GadgetChild
 {
-	Q_OBJECT
+	Q_GADGET
 
 	Q_PROPERTY(int intProperty READ intProperty WRITE setIntProperty)
 
@@ -22,6 +22,7 @@ class GadgetChild : public QObject
 };
 
 Q_DECLARE_METATYPE(GadgetChild *)
+Q_DECLARE_METATYPE(GadgetChild)
 Q_DECLARE_METATYPE(Array<GadgetChild *>)
 
 #endif // GADGETCHILD_H
