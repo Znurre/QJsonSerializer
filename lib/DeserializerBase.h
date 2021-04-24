@@ -8,12 +8,14 @@
 
 class IArray;
 class IObjectFactory;
+class IDictionary;
 
 class Q_DECL_EXPORT DeserializerBase
 {
 	protected:
 		DeserializerBase(const IObjectFactory &factory);
 
+		void deserializeDictionary(const QJsonObject &object, IDictionary &target) const;
 		void deserializeArray(const QJsonArray &array, IArray &target) const;
 		void deserializeObject(const QJsonObject &object, void *instance, const QMetaObject *metaObject) const;
 

@@ -7,9 +7,13 @@
 #include <QObject>
 
 class IArray;
+class IDictionary;
 
 class Q_DECL_EXPORT SerializerBase
 {
+	friend class IArray;
+	friend class IDictionary;
+
 	protected:
 		QJsonArray serializeArray(const IArray &source) const;
 		QJsonObject serializeObject(const void *source, const QMetaObject *metaObject) const;

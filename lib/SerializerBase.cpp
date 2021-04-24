@@ -57,9 +57,9 @@ QJsonObject SerializerBase::serializeObject(const void *source, const QMetaObjec
 			}
 			else
 			{
-				const IArray *factory = (IArray *)value.data();
+				const ISerializable *serializable = (ISerializable *)value.data();
 
-				target[name] = serializeArray(*factory);
+				target[name] = serializable->serialize(*this);
 			}
 		}
 		else

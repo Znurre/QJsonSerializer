@@ -7,7 +7,9 @@ VER_MAJ = 1
 HEADERS += \
 	Array.h \
     DeserializerBase.h \
+	Dictionary.h \
     IDeserializer.h \
+	ISerializable.h \
     QJsonSerializer \
     QJsonSerializer.h \
     SerializerBase.h \
@@ -15,7 +17,9 @@ HEADERS += \
     IObjectFactory.h
 
 SOURCES += \
+	Array.cpp \
 	DeserializerBase.cpp \
+	Dictionary.cpp \
 	SerializerBase.cpp \
     QJsonSerializer.cpp
 

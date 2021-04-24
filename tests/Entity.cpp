@@ -47,6 +47,16 @@ void Entity::setDateTimeProperty(const QDateTime &dateTimeProperty)
 	m_dateTimeProperty = dateTimeProperty;
 }
 
+QVariant Entity::variantProperty() const
+{
+	return m_variantProperty;
+}
+
+void Entity::setVariantProperty(const QVariant &variantProperty)
+{
+	m_variantProperty = variantProperty;
+}
+
 Array<int> Entity::intCollection() const
 {
 	return m_intCollection;
@@ -65,6 +75,16 @@ Array<QString> Entity::stringCollection() const
 void Entity::setStringCollection(const Array<QString> &stringCollection)
 {
 	m_stringCollection = stringCollection;
+}
+
+Dictionary<Child *> Entity::dictionary() const
+{
+	return m_dictionary;
+}
+
+void Entity::setDictionary(const Dictionary<Child *> &dictionary)
+{
+	m_dictionary = dictionary;
 }
 
 int Entity::intProperty() const

@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "Array.h"
+#include "Dictionary.h"
 
 class Child : public QObject
 {
@@ -23,5 +24,6 @@ class Child : public QObject
 
 Q_DECLARE_METATYPE(Child *)
 Q_DECLARE_METATYPE(Array<Child *>)
+Q_DECLARE_METATYPE(Dictionary<Child *>)
 
 #endif // CHILD_H

@@ -4,6 +4,7 @@
 #include "IObjectFactory.h"
 #include "DeserializerBase.h"
 #include "Array.h"
+#include "Dictionary.h"
 
 DeserializerBase::DeserializerBase(const IObjectFactory &factory)
 	: m_factory(factory)
@@ -11,8 +12,36 @@ DeserializerBase::DeserializerBase(const IObjectFactory &factory)
 
 }
 
+void DeserializerBase::deserializeDictionary(const QJsonObject &object, IDictionary &target) const
+{
+	target.initialize();
+
+	for (const QString &key : object.keys())
+	{
+		auto value = object[key];
+
+		if (target.isScalar())
+		{
+			auto variant = value.toVariant();
+
+			target.addElement(key, variant);
+		}
+		else
+		{
+			void *child = target.createElement(key, m_factory);
+
+			const QMetaObject *metaObject = target.metaObject();
+			const QJsonObject &elementObject = value.toObject();
+
+			deserializeObject(elementObject, child, metaObject);
+		}
+	}
+}
+
 void DeserializerBase::deserializeArray(const QJsonArray &array, IArray &target) const
 {
+	target.initialize();
+
 	for (int j = 0; j < array.count(); j++)
 	{
 		const QJsonValue &element = array[j];
@@ -62,15 +91,25 @@ void DeserializerBase::deserializeObject(const QJsonObject &object, void *instan
 				{
 					const QMetaType type(userType);
 					const QMetaObject *childMetaObject = type.metaObject();
-
-					void *child = m_factory.create(childMetaObject);
-
 					const QJsonObject &childObject = value.toObject();
-					const QVariant variant(userType, &child);
 
-					deserializeObject(childObject, child, childMetaObject);
+					if (childMetaObject)
+					{
+						void *child = m_factory.create(childMetaObject);
 
-					property.writeOnGadget(instance, variant);
+						const QVariant variant(userType, &child);
+
+						deserializeObject(childObject, child, childMetaObject);
+
+						property.writeOnGadget(instance, variant);
+					}
+					else
+					{
+						auto variant = property.readOnGadget(instance);
+						auto &factory = *(IDictionary *)variant.data();
+
+						deserializeDictionary(childObject, factory);
+					}
 				}
 				else
 				{

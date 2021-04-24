@@ -7,10 +7,13 @@
 #include <QDateTime>
 
 #include "IObjectFactory.h"
+#include "ISerializable.h"
 
-class IArray
+class IArray : public ISerializable
 {
 	public:
+		QJsonValue serialize(const SerializerBase &serializer) const override;
+
 		virtual bool isScalar() const = 0;
 
 		virtual const QMetaObject *metaObject() const = 0;
@@ -19,6 +22,7 @@ class IArray
 		virtual QVariantList toVariantList() const = 0;
 
 		virtual void addElement(const QVariant &variant) = 0;
+		virtual void initialize() = 0;
 };
 
 template<class T>
@@ -65,6 +69,11 @@ class Array
 		void addElement(const QVariant &variant) override
 		{
 			*m_pointer << variant.value<T>();
+		}
+
+		void initialize() override
+		{
+			m_pointer->clear();
 		}
 
 	private:
@@ -123,6 +132,11 @@ class Array<T *>
 		void addElement(const QVariant &variant) override
 		{
 			Q_UNUSED(variant);
+		}
+
+		void initialize() override
+		{
+			m_pointer->clear();
 		}
 
 	private:

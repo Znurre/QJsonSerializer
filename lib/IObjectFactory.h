@@ -2,6 +2,7 @@
 #define IOBJECTFACTORY_H
 
 #include <QMetaObject>
+#include <QMetaMethod>
 #include <QDebug>
 
 class IObjectFactory
@@ -26,7 +27,7 @@ class DefaultObjectFactory : public IObjectFactory
 
 		void *create(const QMetaObject *metaObject) const override
 		{
-			void *child = metaObject->newInstance();
+			auto child = newInstance(metaObject);
 
 			if (!child)
 			{
@@ -35,6 +36,51 @@ class DefaultObjectFactory : public IObjectFactory
 			}
 
 			return child;
+		}
+
+	private:
+		// Works around QTBUG-76663
+		void *newInstance(const QMetaObject *mo) const
+		{
+			QByteArray constructorName = mo->className();
+
+			{
+				int idx = constructorName.lastIndexOf(':');
+
+				if (idx != -1)
+				{
+					constructorName.remove(0, idx + 1); // remove qualified part
+				}
+			}
+
+			QVarLengthArray<char, 512> sig;
+			sig.append(constructorName.constData(), constructorName.length());
+			sig.append('(');
+			sig.append(')');
+			sig.append('\0');
+
+			int idx = mo->indexOfConstructor(sig.constData());
+
+			if (idx < 0)
+			{
+				QByteArray norm = QMetaObject::normalizedSignature(sig.constData());
+				idx = mo->indexOfConstructor(norm.constData());
+			}
+
+			if (idx < 0)
+			{
+				return 0;
+			}
+
+			void *returnValue = 0;
+			void *param[] = { &returnValue };
+
+			if (mo->static_metacall(QMetaObject::CreateInstance, idx, param) >= 0)
+			{
+				return 0;
+			}
+
+			return returnValue;
 		}
 };
 
