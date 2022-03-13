@@ -64,7 +64,7 @@ class SerializerTests : public QObject
 			const Child *child = entity->child();
 
 			QVERIFY(child);
-			QVERIFY(child->intProperty() == 6);
+			QCOMPARE(child->intProperty(), 6);
 		}
 
 		void shouldBeAbleToDeserializeArrayProperties()

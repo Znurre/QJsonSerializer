@@ -97,7 +97,11 @@ void DeserializerBase::deserializeObject(const QJsonObject &object, void *instan
 					{
 						void *child = m_factory.create(childMetaObject);
 
+#if QT_VERSION >= 0x060000
+						const QVariant variant(type, &child);
+#else
 						const QVariant variant(userType, &child);
+#endif
 
 						deserializeObject(childObject, child, childMetaObject);
 
