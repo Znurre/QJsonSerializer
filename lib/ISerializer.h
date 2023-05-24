@@ -6,6 +6,7 @@
 
 #include "Array.h"
 #include "SerializerBase.h"
+#include "Library.h"
 
 template<class TSource>
 class ISerializer
@@ -15,7 +16,7 @@ class ISerializer
 };
 
 template<class TSource>
-class Serializer
+class QJSONSERIALIZER_EXPORT Serializer
 	: public SerializerBase
 	, public ISerializer<TSource>
 {
@@ -29,7 +30,7 @@ class Serializer
 };
 
 template<class TSource>
-class Serializer<TSource *>
+class QJSONSERIALIZER_EXPORT Serializer<TSource *>
 	: public SerializerBase
 	, public ISerializer<TSource *>
 {
@@ -47,7 +48,7 @@ class Serializer<TSource *>
 };
 
 template<class TReturn>
-class Serializer<Array<TReturn>>
+class QJSONSERIALIZER_EXPORT Serializer<Array<TReturn>>
 	: public SerializerBase
 	, public ISerializer<Array<TReturn>>
 {

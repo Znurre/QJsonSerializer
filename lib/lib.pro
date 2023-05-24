@@ -10,6 +10,7 @@ HEADERS += \
 	Dictionary.h \
     IDeserializer.h \
 	ISerializable.h \
+    Library.h \
     QJsonSerializer \
     QJsonSerializer.h \
     SerializerBase.h \

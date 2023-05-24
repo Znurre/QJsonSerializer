@@ -14,8 +14,9 @@
 #include "IDeserializer.h"
 #include "IObjectFactory.h"
 #include "ISerializer.h"
+#include "Library.h"
 
-class Q_DECL_EXPORT QJsonSerializer
+class QJSONSERIALIZER_EXPORT QJsonSerializer
 {
 	public:
 		QJsonSerializer();

@@ -10,7 +10,7 @@ class IArray;
 class IObjectFactory;
 class IDictionary;
 
-class Q_DECL_EXPORT DeserializerBase
+class DeserializerBase
 {
 	protected:
 		DeserializerBase(const IObjectFactory &factory);

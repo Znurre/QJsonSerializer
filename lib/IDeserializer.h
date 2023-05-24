@@ -6,9 +6,10 @@
 
 #include "Array.h"
 #include "DeserializerBase.h"
+#include "Library.h"
 
 template<class TReturn>
-class Deserializer : public DeserializerBase
+class QJSONSERIALIZER_EXPORT Deserializer : public DeserializerBase
 {
 	public:
 		Deserializer(const IObjectFactory &factory)
@@ -57,7 +58,7 @@ class Deserializer : public DeserializerBase
 };
 
 template<class TReturn>
-class Deserializer<TReturn *> : public DeserializerBase
+class QJSONSERIALIZER_EXPORT Deserializer<TReturn *> : public DeserializerBase
 {
 	public:
 		Deserializer(const IObjectFactory &factory)
@@ -90,7 +91,7 @@ class Deserializer<TReturn *> : public DeserializerBase
 };
 
 template<class TReturn>
-class Deserializer<Array<TReturn>> : public DeserializerBase
+class QJSONSERIALIZER_EXPORT Deserializer<Array<TReturn>> : public DeserializerBase
 {
 	public:
 		Deserializer(const IObjectFactory &factory)

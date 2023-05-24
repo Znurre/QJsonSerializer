@@ -9,7 +9,7 @@
 class IArray;
 class IDictionary;
 
-class Q_DECL_EXPORT SerializerBase
+class SerializerBase
 {
 	friend class IArray;
 	friend class IDictionary;
